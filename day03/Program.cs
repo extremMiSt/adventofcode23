@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 int size = 140;
 
@@ -63,8 +62,6 @@ for (int i = 0; i < size; i++){
             if(i+1<size && j+1<size && numbers.Contains(schematic[i+1,j+1])){   l.Add(numberAt(i+1,j+1, schematic, numbers));};
             if(i-1>=0 && j+1<size   && numbers.Contains(schematic[i-1,j+1])){   l.Add(numberAt(i-1,j+1, schematic, numbers));};
             if(i+1<size && j-1>=0   && numbers.Contains(schematic[i+1,j-1])){   l.Add(numberAt(i+1,j-1, schematic, numbers));};
-            Console.WriteLine(l.Count);
-            Console.WriteLine(string.Join(",", l));
             if(l.Count==2){
                 int[] a = l.ToArray();
                 gear+= a[0]*a[1];
