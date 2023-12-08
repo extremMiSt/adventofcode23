@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-StreamReader reader = new StreamReader(File.OpenRead("./day07/input.txt")); 
+﻿StreamReader reader = new StreamReader(File.OpenRead("./day07/input.txt")); 
 
 List<Hand> hands = [];
 
