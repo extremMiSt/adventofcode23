@@ -212,9 +212,7 @@ if(path2 == null){
 Console.WriteLine("part2: " + Heat(map,path2));
 
 
-
-
-Dictionary<Tuple<int, int>, char> d = [];
+/*Dictionary<Tuple<int, int>, char> d = [];
 foreach(Tuple<Tuple<int, int>, char> t in path2){
     d.Add(t.Item1, t.Item2);
 }
@@ -230,7 +228,7 @@ for (int y = 0; y < mY; y++){
         }
     }
     Console.WriteLine();
-}
+}*/
 
 static int Heat(List<String> map, ImmutableList<Tuple<Tuple<int, int>, char>> list){
     int sum = 0;
