@@ -77,7 +77,6 @@ foreach(string l in loops){
                         found ++;
                     }
                     lastB = cur.C;
-                    break;
                 }
                 List<Triple<string, string, bool>> next = modules[cur.B].Pulse(cur.A, cur.C);
                 next.ForEach(q.Enqueue);
@@ -88,19 +87,11 @@ foreach(string l in loops){
 }
 
 /*
-okay imma be honest: 
-I tried this out of desperation, cause someone suggested to me that this is what was asked for.
-but as far as I understood the task, this is utterly wrong.
-
-this assumes that the initial offset `cycle[k][0]` is the same as the cycle-length 
-`cycle[k][1]`, which it very much isn't.
-
-when I tried to take into account the differing cycle lengths and offsets I got into 
-the situation that no solution existed. see calc.ods, where F10 not being an integer 
-means that there is no solution.
-
-but AoC accepted this as the correct answer...
+foreach(string k in cycle.Keys){
+    Console.Write(k+ ": " + cycle[k][0] + " " + cycle[k][1]);
+}
 */
+
 long solution = 1;
 foreach(string k in cycle.Keys){
     solution = lcm(solution, cycle[k][0]);
@@ -118,5 +109,5 @@ static long gcd(long a, long b){
 }
 
 static long lcm(long a, long b){
-    return (a / gcd(a, b)) * b;
+    return a / gcd(a, b) * b;
 }
