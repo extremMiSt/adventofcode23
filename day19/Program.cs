@@ -1,6 +1,4 @@
-﻿using System.Runtime.Remoting;
-
-StreamReader reader = new(File.OpenRead("./day19/input.txt")); 
+﻿StreamReader reader = new(File.OpenRead("./day19/input.txt")); 
 
 Dictionary<string,List<Rule>> rules = [];
 
