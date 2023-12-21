@@ -21,11 +21,10 @@ while(!reader.EndOfStream){
     line++;
 }
 
-Console.WriteLine(xS + " " + yS);
 Console.WriteLine("part1: " + reacheable(xS, yS, steps, map));
-Console.WriteLine("data: " + reacheableRec(xS, yS, 4, map));
-Console.WriteLine("data: " + reacheableRec(xS, yS, 10, map));
-Console.WriteLine("data: " + reacheableRec(xS, yS, 50, map));
+Console.WriteLine("data: " + reacheableRec(xS, yS, 65+131*1, map));
+Console.WriteLine("data: " + reacheableRec(xS, yS, 65+131*2, map));
+Console.WriteLine("data: " + reacheableRec(xS, yS, 65+131*3, map));
 double inp = 26501365;
 double a = 15387;
 double den = 17161;
@@ -33,13 +32,25 @@ double b = 28618;
 double c = 246426;
 
 double res = (a*inp*inp)/den + (b*inp)/den - c/den;
-Console.WriteLine(res);
-//6380079850264089 too high
-//629720570456281
-//629720570456282
-//600623511205421 too low
-//667128043313758 is wrong too...
-//592316293533198
+Console.WriteLine("part2, wrong: " + res);
+
+/*
+fuck c# not having BigDecimals... this is wrong because of rounding errors!
+here is the java code I got the answer with:
+    BigDecimal inp = new BigDecimal(26501365);
+    BigDecimal a = new BigDecimal(15387);
+    BigDecimal b = new BigDecimal(28618);
+    BigDecimal c = new BigDecimal(246426);
+    BigDecimal den = new BigDecimal(17161);
+    BigDecimal res = 
+            a.multiply(inp.multiply(inp)).divide(den,100,RoundingMode.CEILING).add(
+              b.multiply(inp).divide(den,100,RoundingMode.CEILING)
+            ).add(
+              c.divide(den,100,RoundingMode.CEILING)
+            );
+    System.out.println(res);
+*/
+Console.WriteLine("part2, from java: 629720570456311.00000...");
 
 
 static long reacheable(int xS, int yS, int steps, List<String> map){
