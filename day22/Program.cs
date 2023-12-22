@@ -13,13 +13,14 @@ while(!reader.EndOfStream){
 bricks.Sort();
 
 List<Brick> fallen = [];
-Dictionary<int, List<int>> supported = [];
-Dictionary<int, List<int>> supports = [];
+Dictionary<int, HashSet<int>> supported = [];
+Dictionary<int, HashSet<int>> supports = [];
+int height = 5;
 foreach(Brick b in bricks){
     if(b.Lowest==1){
         fallen.Add(b);
     }else{
-        Brick fall = b;
+        Brick fall = b.LowerTo(Math.Min(b.Lowest, height+1));
         while(Count(supported,fall.Num)==0){
             if(fall.Lowest==1){
                 break;
@@ -38,17 +39,19 @@ foreach(Brick b in bricks){
             fall = lower;
         }
         fallen.Add(fall);
+        if(fall.Highest > height) height = fall.Highest;
     }
 }
 
 
 int count = 0;
+HashSet<int> structural = [];
 foreach(Brick b in fallen){
     if(!supports.ContainsKey(b.Num)){
         count++;
         continue;
     }else{
-        List<int> above = supports[b.Num];
+        HashSet<int> above = supports[b.Num];
         List<int> would = [];
         foreach(int i in above){
             if(supported[i].Count <2){
@@ -57,52 +60,44 @@ foreach(Brick b in fallen){
         }
         if(would.Count == 0){
             count++;
+        }else{
+            structural.Add(b.Num);
         }
     }
 }
-Console.WriteLine(count);
+Console.WriteLine("part 1: " + count);
 
 
 int max = 0;
 fallen.Sort();
-IEnumerable<Brick> rev = fallen.Reverse<Brick>();
-foreach(Brick r in rev){
-    int f = falling(r, supported, supports);
-    if(f> max) max = f;
-}
-Console.WriteLine(max);
-//158 is too low
+foreach(int cur in structural){
 
+    HashSet<int> affected = [];
+    Queue<int> q = [];
+    q.Enqueue(cur);
+    while(q.Count != 0){
+        int head = q.Dequeue();
+        affected.Add(head);
 
-static int falling(Brick disintegrated, Dictionary<int, List<int>> supported, Dictionary<int, List<int>> supports){
-    if(!supports.ContainsKey(disintegrated.Num)){
-        G.fell[disintegrated.Num] = [];
-        return 0;
-    }else{
-        HashSet<int> s = [];
-        List<int> above = wouldFall(disintegrated, supported, supports);
+        if(!supports.ContainsKey(head)) continue;
+
+        HashSet<int> above = supports[head];
         foreach(int i in above){
-            s.UnionWith(G.fell[i]);
-            s.Add(i);
-        }
-        G.fell[disintegrated.Num]=s;
-        return s.Count;
-    }
-}
-
-static List<int> wouldFall(Brick disintegrated, HashSet<int> falling, Dictionary<int, List<int>> supported, Dictionary<int, List<int>> supports){
-    List<int> above = supports[disintegrated.Num];
-    List<int> would = [];
-    foreach(int i in above){
-        HashSet<int> sup = supported[i].RemoveAll(X => falling.Contains(X));
-        if(supported[i].Count <2){
-            would.Add(i);
+            HashSet<int> sup = new(supported[i]);
+            sup.ExceptWith(affected);
+            if(sup.Count == 0 && !affected.Contains(i)){
+                q.Enqueue(i);
+                affected.Add(i);
+            }
         }
     }
-    return would;
-}
 
-static void AddCreate<K,V>(Dictionary<K,List<V>> dict, K key, V elem) where K : notnull{
+    max += affected.Count - 1;
+}
+Console.WriteLine("part 2: " + max);
+
+
+static void AddCreate<K,V>(Dictionary<K,HashSet<V>> dict, K key, V elem) where K : notnull{
     if(dict.ContainsKey(key)){
         dict[key].Add(elem);
     }else{
@@ -112,14 +107,10 @@ static void AddCreate<K,V>(Dictionary<K,List<V>> dict, K key, V elem) where K : 
 
 
 
-static int Count<K,V>(Dictionary<K,List<V>> dict, K key) where K : notnull{
+static int Count<K,V>(Dictionary<K,HashSet<V>> dict, K key) where K : notnull{
     if(dict.ContainsKey(key)){
         return dict[key].Count;
     }else{
         return 0;
     }
-}
-
-static class G{
-    static public Dictionary<int, HashSet<int>> fell = [];
 }

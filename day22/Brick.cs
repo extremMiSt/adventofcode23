@@ -9,6 +9,8 @@ class Brick() :IComparable<Brick>{
 
     public int Lowest {get;}
 
+    public int Highest {get;}
+
     public int Num {get;}
 
     public Brick(String s, int n): this() {
@@ -30,6 +32,7 @@ class Brick() :IComparable<Brick>{
             }
         }
         Lowest = minz;
+        Highest = maxz;
     }
 
     public Brick(List<int> pp1, List<int> pp2, int n): this(){
@@ -50,6 +53,7 @@ class Brick() :IComparable<Brick>{
             }
         }
         Lowest = minz;
+        Highest = maxz;
     }
 
     public Brick Lower(){
@@ -59,6 +63,17 @@ class Brick() :IComparable<Brick>{
         List<int> p2 = [];
         p2 = new(P2);
         p2[2] = p2[2]-1;
+        return new(p1,p2, Num);
+    }
+
+    public Brick LowerTo(int i){
+        int diff = Highest - Lowest;
+        List<int> p1 = [];
+        p1 = new(P1);
+        p1[2] = i;
+        List<int> p2 = [];
+        p2 = new(P2);
+        p2[2] = i + diff;
         return new(p1,p2, Num);
     }
 
