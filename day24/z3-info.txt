@@ -1,0 +1,2 @@
+z3 is an SMT-solver from microsoft under the MIT licence
+https://github.com/Z3Prover/z3/
